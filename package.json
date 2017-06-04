@@ -4,13 +4,14 @@
   "description": "Proyecto API_RESTful con Nodejs y Express para la proxima super exitosa API de backend para e-commerce",
   "main": "index.js",
   "scripts": {
-  	"start": "nodemon index.js"
+    "start": "nodemon index.js"
   },
   "author": "José Reyes <imjaroiswebdev@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "body-parser": "1.15.2",
-    "express": "4.14.0"
+    "express": "4.14.0",
+    "mongoose": "^4.10.4"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
