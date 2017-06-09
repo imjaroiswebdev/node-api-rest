@@ -78,12 +78,31 @@ app.post('/api/product', (req, res) => {
 
 // Ruta para actualización de producto de acceso según su ID
 app.put('/api/product/:productId', (req, res) => {
+	console.log('PUT /api/product/');
+	let productId = req.params.productId,
+		update = req.body;
 
+	Product.findByIdAndUpdate(productId, update, (err, productUpdated) => {
+		if (err) res.status(500).send({message: `Ha ocurrido un error al intentar actualizar el producto: ${err}`});
+		
+		res.status(200).send({ product: productUpdated });
+	})
 });
 
 // Ruta para eliminar productos de la base de datos según su ID
 app.delete('/api/product/:productId', (req, res) => {
+	console.log('DELETE /api/product');
 
+	let productId = req.params.productId;
+
+	Product.findById(productId, (err, product) => {
+		if (err) res.status(500).send({message: `Ha ocurrido un error al intentar eliminar el producto: ${err}`});
+
+		product.remove(err => {
+			if (err) res.status(500).send({message: `Ha ocurrido un error al intentar eliminar el producto: ${err}`});
+			res.status(200).send({message: 'Producto eliminado satisfactoriamente.'});
+		})
+	});
 });
 
 // Primeramente conectarse a la base de datos para asegurar que la API no 
