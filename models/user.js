@@ -4,14 +4,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Libreria para codificación de la información del usuario en la base de datos
-const bcrypt = require('brycpt-nodejs');
+const bcrypt = require('bcrypt-nodejs');
 
 const crypto = require('crypto');
 
 const UserSchema = new Schema({
 	email: { type: String, unique: true, lowercase: true },
 	displayname: String,
-	avatar: String,
+	avatar: String,	
 	// Con select: false se evitan problemas de seguridad cuando se hace GET
 	// a la información de los usuarios desde el cliente
 	password: { type: String, select: false },
@@ -24,11 +24,11 @@ const UserSchema = new Schema({
 // el password del usuario con bcrypt
 UserSchema.pre('save', (next) => {
 	let user = this;
-	if(!user.isModified('password')) return next();
+	// if(!user.isModified('password')) return next();
 
 
 	bcrypt.genSalt(10, (err, salt) => {
-		if (err) return next();
+		if (err) return next(err);
 
 		bcrypt.hash(user.password, salt, null, (err, hash) => {
 			if(err) return next(err);
