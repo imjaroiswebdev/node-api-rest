@@ -1,0 +1,26 @@
+<form id="login" method="post">
+	<input type="email" name="email" value="" placeholder="Email">
+	<br><br>
+	<input type="password" name="password" value="" placeholder="Contraseña">
+	<br><br>
+	<input type="submit" value="Login">
+</form>
+
+<script>
+	const formLogin = document.querySelector('#login');
+	const formData = new FormData(formLogin);
+
+	// Consumo el endpoint para incio de sesión de usuario
+	// y almacenamiento de token en local storage
+	formLogin.addEventListener('submit', event => {
+		event.preventDefault();
+		fetch('/api/signin', {
+			method: 'POST',
+			body: formData
+		})
+		.then(res => res.json())
+		.then(data => {
+			localStorage.setItem('token', data.token)
+		})
+	})
+</script>
