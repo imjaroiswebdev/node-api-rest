@@ -35,20 +35,41 @@ function signUp (req, res) {
 // Función para inicio de sesión
 function signIn (req, res) {
 	// Se busca al usuario por su email
-	User.find({ email: req.body.email }, (err, user) => {
+	User.findOne({ email: req.body.email }, (err, user) => {
 		if(err) return res.status(500).send({ message: `Ha ocurrido un error interno: ${err}` });
 		if(!user) return res.status(404).send({ message: 'No existe el usuario' });
 
 		req.user = user;
+
 		res.status(200).send({
 			message: 'Access Granted ^_^',
 			// Se crea un nuevo token 
-			token: service.createToken(user)
+			token: service.createToken(user),
+			// Se suministra la foto de perfil del usuario
+			imgProfile: user.gravatar()
 		})
 	});
-}
+};
+
+// Función para borrar usuarios
+function deleteUser (req, res) {
+	console.log('DELETE /api/user');
+
+	// Se usa findOne de Mongoose en vez de User.remove para evitar borrado
+	// de mas de un elemento por error
+	User.findOne({ email: req.body.email }, (err, user) => {
+		if(err) return res.status(500).send({ message: `Ha ocurrido un error interno: ${err}` });
+		if(!user) return res.status(404).send({ message: 'No existe el usuario' });
+
+		user.remove(err => {
+			if (err) res.status(500).send({ message: `Ha ocurrido un error al intentar borrar el usuario: ${err}` });
+			res.status(200).send({ message: 'El usuario fue eliminado exitosamente.' })
+		})
+	});
+};
 
 module.exports = {
 	signUp,
-	signIn
+	signIn,
+	deleteUser
 }

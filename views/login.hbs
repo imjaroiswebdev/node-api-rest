@@ -1,26 +1,46 @@
-<form id="login" method="post">
+<form id="login">
 	<input type="email" name="email" value="" placeholder="Email">
 	<br><br>
 	<input type="password" name="password" value="" placeholder="Contraseña">
 	<br><br>
 	<input type="submit" value="Login">
 </form>
+<br>
+<div><img src="http://via.placeholder.com/100x100" alt="" id="profile-img"></div>
 
 <script>
-	const formLogin = document.querySelector('#login');
-	const formData = new FormData(formLogin);
+	const formLogin = document.querySelector('#login'),
+		profileImg = document.getElementById('profile-img');
 
 	// Consumo el endpoint para incio de sesión de usuario
 	// y almacenamiento de token en local storage
-	formLogin.addEventListener('submit', event => {
+	formLogin.addEventListener('submit', (event) => {
 		event.preventDefault();
+
+		let inputs = document.querySelectorAll('input'),
+			encodedBody = new URLSearchParams();
+
+		// El cuerpo de la solicitud debe ser codificado a for de url
+		// debido a que la api solo esta aceptando solicitudes 
+		// en forma de url a través de sus endpoints
+		for (let i = 0;  i < inputs.length; i++) {
+			if (inputs[i].type != 'submit' ) {
+				encodedBody.append(inputs[i].name.trim(), inputs[i].value.trim())
+			}
+		};
+
 		fetch('/api/signin', {
 			method: 'POST',
-			body: formData
+		  headers: {
+		    "Content-Type": "application/x-www-form-urlencoded"
+		  },
+			body: encodedBody
 		})
 		.then(res => res.json())
 		.then(data => {
-			localStorage.setItem('token', data.token)
-		})
-	})
+			localStorage.setItem('token', data.token);
+			profileImg.src = data.imgProfile;
+		})		
+	});
+
 </script>

@@ -33,8 +33,11 @@ api.delete('/product/:productId', auth, productCtrl.deleteProduct);
 // Ruta para registro de usuarios
 api.post('/signup', userCtrl.signUp);
 
-//Ruta para inicio de sesión de usuario
+// Ruta para inicio de sesión de usuario
 api.post('/signin', userCtrl.signIn);
+
+// Ruta para eliminar usuarios según su email
+api.delete('/user/', auth, userCtrl.deleteUser);
 
 // Ruta de pruebas para autenticación
 api.get('/private', auth, (req, res) => {
