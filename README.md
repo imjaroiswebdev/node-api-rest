@@ -29,6 +29,7 @@ Para garantizar la compatibilidad de las dependencias utiliza _Yarn_, así que l
 ### END POINTS
 ---
 ```javascript
+<<<<<<< HEAD
 // (GET) Ruta para petición de productos (requiere auth por JWT)
 localhost:3001/api/product
 
@@ -51,6 +52,8 @@ localhost:3001/api/signup
 localhost:3001/api/signin
 
 // (DELETE) Ruta para eliminar usuarios según su email (requiere auth por JWT)
+=======
+>>>>>>> d8fa9520043021df1df932f09961dd9253d06a87
 localhost:3001/api/user
 ```
 
